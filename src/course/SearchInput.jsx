@@ -28,6 +28,7 @@ export function SearchInput({ onKeywordChange }) {
   return (
     <div className="form_group">
       <Input
+        className="search_input"
         type="input"
         placeholder="Lesson's title"
         name="search"

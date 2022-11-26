@@ -33,7 +33,7 @@ const StyledForm = styled.form`
   ul {
     align-self: flex-start;
     margin: 0;
-    list-style: disc outside url(./check.svg);
+    list-style: disc outside url("./src/assets/check.svg");
     padding-inline-start: 18px;
   }
 
@@ -94,10 +94,10 @@ export const Lesson = ({ lesson }) => {
     youtube,
   } = lesson;
   return (
-    <StyledForm>
+    <StyledForm className="serach_form">
       <h2>Title: {title}</h2>
       <h3>Type: {type}</h3>
-      <LinksBlock>
+      <LinksBlock className="links_block">
         <a href={youtube} target="_blank">
           See On Youtube
         </a>
@@ -115,7 +115,7 @@ export const Lesson = ({ lesson }) => {
       {hometask.length > 0 && (
         <div>
           <h4>Hometask:</h4>
-          <BorderList>
+          <BorderList className="border_list">
             {hometask.map((task) => (
               <p key={task}>{task}</p>
             ))}
@@ -124,7 +124,7 @@ export const Lesson = ({ lesson }) => {
       )}
       <div>
         <h4>Links</h4>
-        <LinksBlock>
+        <LinksBlock className="links_block">
           {links.map((link) => {
             Object.values(link);
             return (

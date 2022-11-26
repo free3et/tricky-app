@@ -11,7 +11,7 @@ const LessonCard = styled.div`
 export const CourseList = ({ initialCouses }) => {
   if (initialCouses === undefined) return;
   return (
-    <LessonCard>
+    <LessonCard className="lesson_card">
       {Object.values(initialCouses).map((lesson, index) =>
         lesson.hidden ? null : <Lesson key={lesson.name} lesson={lesson} />
       )}
