@@ -1,6 +1,8 @@
 import styled from "@emotion/styled";
+import { useLoaderData } from "react-router-dom";
+import { useKeywordSearch } from "../responses/useKeywordSearch";
 
-const StyledForm = styled.form`
+const StyledForm = styled.div`
   position: relative;
   display: block;
   width: 100%;
@@ -33,7 +35,6 @@ const StyledForm = styled.form`
   ul {
     align-self: flex-start;
     margin: 0;
-    list-style: disc outside url("./src/assets/check.svg");
     padding-inline-start: 18px;
   }
 
@@ -83,73 +84,56 @@ const BorderList = styled.div`
   }
 `;
 
-export const Lesson = ({ lesson }) => {
-  const {
-    title,
-    type,
-    keyPoints = [],
-    hometask = [],
-    links = [],
-    takeaways = [],
-    youtube,
-  } = lesson;
+export const Lesson = () => {
+  const lesId = useLoaderData();
+  const { response } = useKeywordSearch();
+
+  if (response.data === undefined) return;
+
   return (
-    <StyledForm className="serach_form">
-      <h2>Title: {title}</h2>
-      <h3>Type: {type}</h3>
-      <LinksBlock className="links_block">
-        <a href={youtube} target="_blank">
-          See On Youtube
-        </a>
-      </LinksBlock>
-      {keyPoints.length > 0 && (
-        <div>
-          <h4>Key Points:</h4>
-          <ul>
-            {keyPoints.map((point) => (
-              <li key={point}>{point}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-      {hometask.length > 0 && (
-        <div>
-          <h4>Hometask:</h4>
-          <BorderList className="border_list">
-            {hometask.map((task) => (
-              <p key={task}>{task}</p>
-            ))}
-          </BorderList>
-        </div>
-      )}
-      <div>
-        <h4>Links</h4>
-        <LinksBlock className="links_block">
-          {links.map((link) => {
-            Object.values(link);
-            return (
-              <a
-                className="hometask_links"
-                href={link[1]}
-                key={link}
-                target="_blank"
-              >
-                {link[0]}
+    <div className="lesson_card">
+      {Object.values(response.data).map((lesson, index) =>
+        lesson.name === lesId ? (
+          <StyledForm key={index}>
+            <h2>Title: {lesson.title}</h2>
+            <h3>Type: {lesson.type}</h3>
+            <LinksBlock className="links_block">
+              <a href={lesson.youtube} target="_blank">
+                See On Youtube
               </a>
-            );
-          })}
-        </LinksBlock>
-      </div>
-      {takeaways.length > 0 && (
-        <div>
-          <h4>Take Aways:</h4>
-          <ul>
-            {takeaways.map((takeaway) => (
-              <li key={takeaway}>{takeaway}</li>
-            ))}
-          </ul>
-        </div>
+            </LinksBlock>
+            {lesson.keyPoints.length > 0 && (
+              <div>
+                <h4>Key Points:</h4>
+                <ul>
+                  {lesson.keyPoints.map((point) => (
+                    <li key={point}>{point}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <div>
+              <h4>Links</h4>
+              <LinksBlock className="links_block">
+                {lesson.links.map((link) => {
+                  Object.values(link);
+                  return (
+                    <a
+                      className="hometask_links"
+                      href={link[1]}
+                      key={link}
+                      target="_blank"
+                    >
+                      {link[0]}
+                    </a>
+                  );
+                })}
+              </LinksBlock>
+            </div>
+          </StyledForm>
+        ) : null
       )}
-    </StyledForm>
+    </div>
   );
 };

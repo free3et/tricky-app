@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useKeywordContext } from "../context/keywordContext";
-import { Loader } from "./Loader";
 
 export const useKeywordSearch = () => {
   const search_keyword = useKeywordContext();

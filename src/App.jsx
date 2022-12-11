@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./App.css";
 import { SearchInput } from "./course/SearchInput";
 import { CourseWrapperPage } from "./course/CourseWrapperPage";
 import { KeywordContext } from "./context/keywordContext";
-import { GlobalErrorHandler } from "./responses/Error";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./router";
 
 document.addEventListener("error", (e) => {
   console.log(error);
@@ -11,23 +12,28 @@ document.addEventListener("error", (e) => {
 
 function App() {
   const [search_keyword, setKeyword] = useState("");
+  const [contextValue, setContextValue] = useState("");
 
   const onKeywordChange = (keyword) => {
-    setKeyword(keyword);
+    setContextValue(keyword);
   };
 
-  useEffect(() => onKeywordChange(search_keyword), [search_keyword]);
+  const searchLessons = (keyword) => {
+    setKeyword(contextValue);
+  };
 
   return (
     <div className="App">
       <h2>Let's find a suitable lecture by keyword</h2>
       <h3>Please, enter your search query in the field below:</h3>
       <SearchInput onKeywordChange={onKeywordChange} />
-      <GlobalErrorHandler>
-        <KeywordContext.Provider value={search_keyword}>
+      <button onClick={searchLessons}>Search</button>
+
+      <KeywordContext.Provider value={search_keyword}>
+        <RouterProvider router={router}>
           <CourseWrapperPage />
-        </KeywordContext.Provider>
-      </GlobalErrorHandler>
+        </RouterProvider>
+      </KeywordContext.Provider>
     </div>
   );
 }
